@@ -1,0 +1,19 @@
+{
+  "node": true,
+  "-W097": true, // Ignores "use strict" warning
+  "browser": true,
+  "devel": true,
+  "validthis": true, // Avoids a warning using `this`,
+  "curly": true,
+  "eqeqeq": true,
+  "immed": true,
+  "latedef": true,
+  "newcap": true,
+  "noarg": true,
+  "sub": true,
+  "boss": true,
+  "eqnull": true,
+  "globals": {
+    "angular": true
+  }
+}
