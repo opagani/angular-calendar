@@ -13,7 +13,7 @@ angular.module('angularCalendarApp.controllers', [])
     $scope.eventSource = {
         url: "http://www.google.com/calendar/feeds/usa__en%40holiday.calendar.google.com/public/basic",
         className: 'gcal-event',           // an option!
-        currentTimezone: 'America/Chicago' // an option!
+        currentTimezone: 'America/Los_Angeles' // an option!
     };
 
     /* event source that contains custom events on the scope */
@@ -57,15 +57,15 @@ angular.module('angularCalendarApp.controllers', [])
 
     /* alert on Resize */
     $scope.alertOnResize = function(event, dayDelta, minuteDelta, revertFunc, jsEvent, ui, view ) {
-       $scope.alertMessage = ('Event Resized to make dayDelta ' + minuteDelta);
+       $scope.alertMessage = ('Event Resized to make dayDelta ' + dayDelta);
     };
 
     /* add and removes an event source of choice */
-    $scope.addRemoveEventSource = function(sources,source) {
+    $scope.addRemoveEventSource = function(sources, source) {
         var canAdd = 0;
-        angular.forEach(sources,function(value, key){
+        angular.forEach(sources, function(value, key){
             if(sources[key] === source){
-                sources.splice(key,1);
+                sources.splice(key, 1);
                 canAdd = 1;
             }
         });
@@ -86,12 +86,12 @@ angular.module('angularCalendarApp.controllers', [])
 
     /* remove event */
     $scope.remove = function(index) {
-        $scope.events.splice(index,1);
+        $scope.events.splice(index, 1);
     };
 
     /* Change View */
     $scope.changeView = function(view, calendar) {
-        calendar.fullCalendar('changeView',view);
+        calendar.fullCalendar('changeView', view);
     };
 
     /* Change View */

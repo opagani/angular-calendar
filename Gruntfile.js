@@ -2,6 +2,8 @@
 
 module.exports = function(grunt) {
 
+  require('time-grunt')(grunt);
+
   // Dynamically loads all required grunt tasks
   require('matchdep').filterDev('grunt-*').forEach(grunt.loadNpmTasks);
 
@@ -82,14 +84,14 @@ module.exports = function(grunt) {
       },
       styles: {
         files: [ 'app/less/{,*/}*.less', 'app/css/main.css' ],
-        tasks: [ 'less:dist', 'autoprefixer:dist' ],
+        tasks: [ 'newer:less:dist', 'autoprefixer:dist' ],
         options: {
           livereload: true
         }
       },
       scripts: {
         files: [ 'app/js/{,*/}*.js', '!app/js/combined*.js' ],
-        tasks: [ 'jshint:dev', 'uglify:scripts' ]
+        tasks: [ 'newer:jshint:dev', 'newer:uglify:scripts' ]
       },
       server: {
         files: ['.rebooted'],

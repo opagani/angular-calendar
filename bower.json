@@ -1,17 +1,15 @@
 {
   "name": "angular-calendar",
   "version": "0.1.0",
-  "authors": [
-    "Oscar Pagani <paganio@yahoo.com>"
-  ],
+  "author": "Oscar Pagani <paganio@yahoo.com>",
   "license": "MIT",
-  "private": true,
   "ignore": [
     "**/.*",
     "node_modules",
     "bower_components",
-    "test",
-    "tests"
+    "test*",
+    "Gruntfile.js",
+    "package.json"
   ],
   "dependencies": {
     "angular": "~1.2.21",

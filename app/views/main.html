@@ -3,8 +3,8 @@
     <h1>Angular Calendar</h1>
     <p>AngularJS calendar for the <a href="http://arshaw.com/fullcalendar/">Arshaw FullCalendar</a>.</p>
     <p class="btn-group">
-      <a href="https://github.com/opagani/angular-calendar" class='btn'><i class='icon-github'></i> Code on Github</a>
-      <a href="https://github.com/opagani/angular-calendar/archive/master.zip" class='btn btn-primary'><i class="icon-download-alt icon-white"></i> Download <small>(0.1.0)</small></a>
+      <a href="https://github.com/opagani/angular-calendar" class="btn btn-default"><i class="glyphicon white"></i> Code on Github</a>
+      <a href="https://github.com/opagani/angular-calendar/archive/master.zip" class="btn btn-primary"><i class="glyphicon glyphicon-download-alt white"></i> Download <small>(0.1.0)</small></a>
     </p>
   </div>
 </div>
@@ -27,14 +27,14 @@
                         
             <div class="btn-group calTools">
               <button class="btn" ng-click="changeLang()">{{changeTo}}</button>              
-              <button class="btn" ng-click="addRemoveEventSource(eventSources,eventSource)">Toggle Source</button>
+              <button class="btn" ng-click="addRemoveEventSource(eventSources, eventSource)">Toggle Source</button>
               <button type="button" class="btn btn-primary" ng-click="addEvent()">Add Event</button>
             </div>
 
             <ul class="unstyled">
               <li ng-repeat="e in events">
                 <div class="alert alert-info">
-                  <a class="close" ng-click="remove($index)"><i class="icon-remove"></i></a>
+                  <a class="close" ng-click="remove($index)"><i class="glyphicon glyphicon-remove"></i></a>
                   <b> <input ng-model="e.title"></b> 
                   {{e.start | date:"MMM dd"}} - {{e.end | date:"MMM dd"}}
                 </div>

@@ -5,10 +5,8 @@ body {
 section {
     padding-top: 40px;
 }
-.icon-github {
-    background: no-repeat url('../lib/bootstrap/docs/assets/img/github-16px.png');
-    width: 16px;
-    height: 16px;
+.white, .white a {
+    color: #fff;
 }
 .hero-unit {
     position: relative;
@@ -38,25 +36,6 @@ section {
 }
 .hero-unit p {
     margin: 1em 0;
-}
-
-/* Allows .modal-backdrop to remain on the page without blocking */
-.modal-backdrop {
-    overflow: hidden;
-    height: 0;
-    -webkit-transition: opacity 0.15s linear, height 0 0.2s linear;
-    -moz-transition: opacity 0.15s linear, height 0 0.2s linear;
-    -ms-transition: opacity 0.15s linear, height 0 0.2s linear;
-    -o-transition: opacity 0.15s linear, height 0 0.2s linear;
-    transition: opacity 0.15s linear, height 0 0.2s linear;
-}
-.modal-backdrop.in {
-    height: 100%;
-    -webkit-transition: opacity 0.15s linear;
-    -moz-transition: opacity 0.15s linear;
-    -ms-transition: opacity 0.15s linear;
-    -o-transition: opacity 0.15s linear;
-    transition: opacity 0.15s linear;
 }
 
 /*** Calendar ***/
