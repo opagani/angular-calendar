@@ -13,6 +13,7 @@
   "sub": true,
   "boss": true,
   "eqnull": true,
+  "laxcomma": true,
   "globals": {
     "angular": true
   }

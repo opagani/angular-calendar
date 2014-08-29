@@ -1,58 +1,69 @@
-var express = require('express');
-var path = require('path');
-var favicon = require('static-favicon');
-var logger = require('morgan');
-var cookieParser = require('cookie-parser');
-var bodyParser = require('body-parser');
+// Creates and configures the server
+var express = require('express')
+  , path = require('path')
+  , favicon = require('static-favicon')
+  , logger = require('morgan')
+  , cookieParser = require('cookie-parser')
+  , bodyParser = require('body-parser')
+  , expressSession = require('express-session')
+  , mongoStore = require('connect-mongo')({session: expressSession})
+  , dbConn = require('./db_connection');
 
-var routes = require('./routes/index');
+dbConn.getDBConnection(function(currentDB) {
+    var app = express();
 
-var app = express();
+    // view engine setup
+    app.set('views', path.join(__dirname, 'app'));
+    app.set('view engine', 'ejs');
 
-// view engine setup
-app.set('views', path.join(__dirname, 'app'));
-app.set('view engine', 'ejs');
+    app.set('port', process.env.PORT || 9000);
 
-app.use(favicon());
-app.use(logger('dev'));
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded());
-app.use(cookieParser());
-app.use(require('less-middleware')(path.join(__dirname, 'app')));
-app.use(express.static(path.join(__dirname, 'app')));
-app.use('/bower_components',  express.static(__dirname + '/bower_components'));
+    app.use(favicon());
+    app.use(logger('dev'));
+    app.use(bodyParser.json());
+    app.use(bodyParser.urlencoded());
+    app.use(cookieParser());
+    app.use(require('less-middleware')(path.join(__dirname, 'app')));
+    app.use(express.static(path.join(__dirname, 'app')));
+    app.use('/bower_components',  express.static(__dirname + '/bower_components'));
+    /*app.use('/', routes);
 
-app.use('/', routes);
+    /// catch 404 and forward to error handler
+    app.use(function(req, res, next) {
+        var err = new Error('Not Found');
+        err.status = 404;
+        next(err);
+    });
 
-/// catch 404 and forward to error handler
-app.use(function(req, res, next) {
-    var err = new Error('Not Found');
-    err.status = 404;
-    next(err);
-});
+    /// error handlers
 
-/// error handlers
+    // development error handler
+    // will print stacktrace
+    if (app.get('env') === 'development') {
+        app.use(function(err, req, res, next) {
+            res.status(err.status || 500);
+            res.render('error', {
+                message: err.message,
+                error: err
+            });
+        });
+    }
 
-// development error handler
-// will print stacktrace
-if (app.get('env') === 'development') {
+    // production error handler
+    // no stacktraces leaked to user
     app.use(function(err, req, res, next) {
         res.status(err.status || 500);
         res.render('error', {
             message: err.message,
-            error: err
+            error: {}
         });
-    });
-}
+    });*/
 
-// production error handler
-// no stacktraces leaked to user
-app.use(function(err, req, res, next) {
-    res.status(err.status || 500);
-    res.render('error', {
-        message: err.message,
-        error: {}
+    require('./routes/index')(app);
+
+    require('http').createServer(app).listen(app.get('port'), function () {
+        console.log('Listening on port '+app.get('port'));
     });
 });
 
-module.exports = app;
+//module.exports = app;

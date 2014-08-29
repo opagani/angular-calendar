@@ -17,9 +17,9 @@ module.exports = function(grunt) {
           cleancss: true // Minifies CSS output
         },
         files: { 
-          'app/css/combined-grunt.min.css': [
+          'app/styles/combined-grunt.min.css': [
             'app/less/{,*/}*.less',
-            'app/css/main.css'
+            'app/styles/main.css'
           ]
         }
       }
@@ -28,7 +28,7 @@ module.exports = function(grunt) {
     // Adds vendor prefixes to CSS
     autoprefixer: {
       dist: {
-        src: 'app/css/combined-grunt.min.css'
+        src: 'app/styles/combined-grunt.min.css'
       }
     },
 
@@ -41,9 +41,9 @@ module.exports = function(grunt) {
       },
       scripts: {
         files: {
-          'app/js/combined-grunt.min.js': [
-            'app/js/{,*/}*.js',
-            '!app/js/combined*.js'
+          'app/scripts/combined-grunt.min.js': [
+            'app/scripts/{,*/}*.js',
+            '!app/scripts/combined*.js'
           ]
         }
       }
@@ -56,7 +56,7 @@ module.exports = function(grunt) {
             jshintrc: true,
             reporter: require('jshint-stylish'),
           },
-          src: [ '{,*/}*.js', 'app/js/{,*/}*.js', '!app/js/combined*.js' ]
+          src: [ '{,*/}*.js', 'app/scripts/{,*/}*.js', '!app/scripts/combined*.js' ]
         }
     },
 
@@ -83,14 +83,14 @@ module.exports = function(grunt) {
         tasks: [ 'todo' ]
       },
       styles: {
-        files: [ 'app/less/{,*/}*.less', 'app/css/main.css' ],
+        files: [ 'app/less/{,*/}*.less', 'app/styles/main.css' ],
         tasks: [ 'newer:less:dist', 'autoprefixer:dist' ],
         options: {
           livereload: true
         }
       },
       scripts: {
-        files: [ 'app/js/{,*/}*.js', '!app/js/combined*.js' ],
+        files: [ 'app/scripts/{,*/}*.js', '!app/scripts/combined*.js' ],
         tasks: [ 'newer:jshint:dev', 'newer:uglify:scripts' ]
       },
       server: {
@@ -104,7 +104,7 @@ module.exports = function(grunt) {
     // Watches back-end files for changes, restarts the server
     nodemon: {
       dev: {
-        script: 'server.js',
+        script: 'app.js',
         options: {
           env: {
             PORT: 9000

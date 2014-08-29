@@ -1,9 +1,13 @@
-var express = require('express');
-var router = express.Router();
+var express = require('express')
+  , path = require('path');
 
-/* GET home page. */
-router.get('/', function(req, res) {
-  res.render('index', { title: 'Express' });
-});
+module.exports = function(app) {
+    app.get('/', function(req, res) {
+        res.render('index', { title: 'Express' });
+    });
 
-module.exports = router;
+    var users = require('./users_controller');
+    app.get('/users', users.getUsers);
+    app.post('/user/days/subtract', users.subtractUserDays);
+    app.post('/user/days/add', users.addUserDays);
+};

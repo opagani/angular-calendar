@@ -1,8 +1,8 @@
 node_modules/
 bower_components/
 _TODO.md
-app/css/combined-grunt.min.css
-app/css/combined-gulp.min.css
-app/js/combined-grunt.min.js
-app/js/combined-gulp.min.js
+app/styles/combined-grunt.min.css
+app/styles/combined-gulp.min.css
+app/scripts/combined-grunt.min.js
+app/scripts/combined-gulp.min.js
 .rebooted

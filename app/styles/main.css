@@ -52,7 +52,7 @@ section {
     float: left; margin-bottom: 40px;
 }
 
-.fc-event.openSesame .fc-event-skin{
+.fc-event.new-event .fc-event-skin {
     background-color: rgb(229, 229, 11);
     color: black;
 }

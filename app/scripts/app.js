@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('angularCalendarApp', ['ngRoute', 'angularCalendarApp.controllers', 'ui.calendar', 'ui.bootstrap'])
+angular.module('angularCalendarApp', ['ngRoute', 'angularCalendarApp.controllers', 'angularCalendarApp.services', 'ui.calendar', 'ui.bootstrap'])
 .config(function($routeProvider, $locationProvider) {
     $routeProvider
         .when('/', {

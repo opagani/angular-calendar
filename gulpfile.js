@@ -12,7 +12,7 @@ var gulp = require('gulp'),
 
 // Sets up file paths for reuse in task/watch config
 var filepaths = {
-    scripts: [ 'app/js/**/*.js', '!app/js/combined*.js' ]
+    scripts: [ 'app/scripts/**/*.js', '!app/scripts/combined*.js' ]
 };
 
 // Handles task relating to styles
@@ -29,7 +29,7 @@ gulp.task('styles', function(){
 
         // Renames the CSS file and saves it in the proper place
         .pipe(rename('combined-gulp.min.css'))
-        .pipe(gulp.dest('app/css/'))
+        .pipe(gulp.dest('app/styles/'))
 
         // Triggers a live reload to show changes immediately
         .pipe(livereload());
@@ -47,7 +47,7 @@ gulp.task('scripts', function(){
         .pipe(uglify('combined-gulp.min.js', { mangle: false }))
 
         // Saves the minified JS
-        .pipe(gulp.dest('app/js/'))
+        .pipe(gulp.dest('app/scripts/'))
 
         // Triggers a live reload to show changes immediately
         .pipe(livereload());
@@ -63,7 +63,7 @@ gulp.task('watch', [ 'nodemon' ], function(){
 
 // Watches back-end files for changes, restarts the server
 gulp.task('nodemon', function(){
-    nodemon({ script: 'server.js' });
+    nodemon({ script: 'app.js' });
 });
 
 gulp.task('default', [ 'watch' ]);

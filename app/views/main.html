@@ -13,18 +13,18 @@
   <div class="container">
     <section id="directives-calendar" ng-controller="CalendarController">
       <div class="page-header">
-        <h1>Angular-Calendar</h1>
+        <h1>Angular Calendar</h1>
       </div>
       <div class="well">
         <div class="row">
           <div class="col-md-4">
-            <h3>What?</h3>
-            <p>Attach Angular objects to a calendar.</p>
-            <p>Show the data binding between two differnet calendars using the same event sources.</p>
+            <h3>People</h3>
+            <p>Please select a person:</p>
+            
+            <select class="form-control calTools" ng-options="user as user.name for user in users" 
+              ng-model="selectedItem" ng-change="update()">
+            </select>
 
-            <h3>Why?</h3>
-            <p>Why Not?</p>
-                        
             <div class="btn-group calTools">
               <button class="btn" ng-click="changeLang()">{{changeTo}}</button>              
               <button class="btn" ng-click="addRemoveEventSource(eventSources, eventSource)">Toggle Source</button>
