@@ -5,22 +5,17 @@ Angular calendar based on Arshaw FullCalendar and Joshkurz ui-calendar directive
 
 The Angular calendar application uses the MEAN stack:  MongoDB, Express.js, Angular.js and Node.js.
 
-# Requirements
+## Requirements
 - ([AngularJS](http://code.angularjs.org/1.2.23/angular.js))
 - ([fullcalendar.js 1.6.4 and it's dependencies](http://arshaw.com/fullcalendar/download/))
+- ([ui-calendar](http://angular-ui.github.io/ui-calendar/))
 - ([gcal-plugin](http://arshaw.com/js/fullcalendar-1.5.3/fullcalendar/gcal.js))
-
-# Testing
-
-We use karma, jasmine and grunt to ensure the quality of the code.
 
 ## Setup
 
-### Install Node.js >= 0.8.x
+### Install Node.js
 
 If Node.js version 0.8.x (preferably 0.10.x) is not already installed on your system, install it so you can run this app.
-
-#### Check if it's installed
 
 The command `which node` will return a path to your installed version of Node.js, if it exists on your system.
 
@@ -62,6 +57,7 @@ or
 Create a data folder; by default, MongoDB uses /data/db.
 
 $ sudo mkdir -p /data/db
+
 $ sudo chown `id -u` /data/db
 
 ### Run the Mongo Server
@@ -73,7 +69,9 @@ Or, if you added $PATH for the MongoDB location, type the following:
 $ mongod --dbpath /data/db
 
 If you see something like
+
 MongoDB starting: pid =7218 port=27017...
+
 this means the MongoDB database server is running. By default, it’s listening to http://localhost:27017.
 
 ### Import data into the Mongo Server (needed for this application)
@@ -91,22 +89,32 @@ $ mongod
 You should see something like this:
 
 bash-3.2$ mongo
+
 MongoDB shell version: 2.6.4
+
 connecting to: test
 
 Then, runs these commands to make sure that the db calendar and collection users were created and the data was imported.
 
 > use calendar
+
 switched to db calendar
+
 > db.collections.find()
+
 > db.collection.find()
+
 > use calendar
+
 switched to db calendar
+
 > db.users.find()
+
 { "_id" : ObjectId("5406708e4349f7b8a02c460d"), "name" : "Oscar Pagani", "days" : 6 }
+
 { "_id" : ObjectId("5406708e4349f7b8a02c460e"), "name" : "Joe Perez", "days" : 6 }
+
 ...
-> 
 
 ### Install Bower
 
@@ -136,7 +144,7 @@ You may need to use sudo to install grunt globally.
 
     cd to your angular-calendar directory
 
-    % cd angular-calendar
+    $ cd angular-calendar
 
     $ npm install
 
@@ -157,6 +165,10 @@ You may need to use sudo to install grunt globally.
 #### You will build our app and run tests using Jasmine
 
     $ grunt test
+
+## Testing
+
+We use karma, jasmine and grunt to ensure the quality of the code.
 
 ## License
 
