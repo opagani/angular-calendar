@@ -21,6 +21,7 @@ module.exports = function(config) {
         'bower_components/angular-mocks/angular-mocks.js',
         'bower_components/fullcalendar/fullcalendar.js',
         'app/scripts/directives/calendar.js',
+        'app/scripts/controllers.js',
         'app/scripts/controllers/calendar.js',
         'test/*.spec.js'
     ],

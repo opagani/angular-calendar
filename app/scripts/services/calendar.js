@@ -1,7 +1,6 @@
 'use strict';
 
-angular.module('angularCalendarApp.services', [])
-.service('GetUsersService', function($q, $http) {
+function GetUsersService($q, $http) {
     this.getUsers = function() {
         var d = $q.defer();
 
@@ -18,16 +17,18 @@ angular.module('angularCalendarApp.services', [])
         });
         return d.promise;
     };
-})
-.service('SubtractUserDaysService', function($q, $http) {
-    this.subtractUserDays = function(name) {
+}
+
+function UpdateUserDaysService($q, $http) {
+    this.updateUserDays = function(name, dayDelta) {
         var d = $q.defer();
 
         $http({
             method: 'POST', 
-            url: '/user/days/subtract',
+            url: '/user/days/update',
             data: { 
-                name: name
+                name: name,
+                dayDelta: dayDelta
             }
         })
         .then(function(response) {
@@ -38,24 +39,8 @@ angular.module('angularCalendarApp.services', [])
         });
         return d.promise;
     };
-})
-.service('AddUserDaysService', function($q, $http) {
-    this.addUserDays = function(name) {
-        var d = $q.defer();
+}
 
-        $http({
-            method: 'POST', 
-            url: '/user/days/add',
-            data: { 
-                name: name
-            }
-        })
-        .then(function(response) {
-            d.resolve();
-        },
-        function(error) {
-            d.reject(error);
-        });
-        return d.promise;
-    };
-});
+angular.module('AngularCalendarApp.services', [])
+    .service('GetUsersService', GetUsersService)
+    .service('UpdateUserDaysService', UpdateUserDaysService);

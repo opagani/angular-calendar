@@ -8,6 +8,5 @@ module.exports = function(app) {
 
     var users = require('./users_controller');
     app.get('/users', users.getUsers);
-    app.post('/user/days/subtract', users.subtractUserDays);
-    app.post('/user/days/add', users.addUserDays);
+    app.post('/user/days/update', users.updateUserDays);
 };

@@ -1,0 +1,1 @@
+angular.module('AngularCalendarApp.controllers', []);

@@ -7,7 +7,7 @@ var express = require('express')
   , bodyParser = require('body-parser')
   , expressSession = require('express-session')
   , mongoStore = require('connect-mongo')({session: expressSession})
-  , dbConn = require('./db_connection');
+  , dbConn = require('./db/db_connection');
 
 dbConn.getDBConnection(function(currentDB) {
     var app = express();
@@ -26,38 +26,6 @@ dbConn.getDBConnection(function(currentDB) {
     app.use(require('less-middleware')(path.join(__dirname, 'app')));
     app.use(express.static(path.join(__dirname, 'app')));
     app.use('/bower_components',  express.static(__dirname + '/bower_components'));
-    /*app.use('/', routes);
-
-    /// catch 404 and forward to error handler
-    app.use(function(req, res, next) {
-        var err = new Error('Not Found');
-        err.status = 404;
-        next(err);
-    });
-
-    /// error handlers
-
-    // development error handler
-    // will print stacktrace
-    if (app.get('env') === 'development') {
-        app.use(function(err, req, res, next) {
-            res.status(err.status || 500);
-            res.render('error', {
-                message: err.message,
-                error: err
-            });
-        });
-    }
-
-    // production error handler
-    // no stacktraces leaked to user
-    app.use(function(err, req, res, next) {
-        res.status(err.status || 500);
-        res.render('error', {
-            message: err.message,
-            error: {}
-        });
-    });*/
 
     require('./routes/index')(app);
 
@@ -65,5 +33,3 @@ dbConn.getDBConnection(function(currentDB) {
         console.log('Listening on port '+app.get('port'));
     });
 });
-
-//module.exports = app;

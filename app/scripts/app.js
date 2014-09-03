@@ -1,17 +1,22 @@
 'use strict';
 
-angular.module('angularCalendarApp', ['ngRoute', 'angularCalendarApp.controllers', 'angularCalendarApp.services', 'ui.calendar', 'ui.bootstrap'])
-.config(function($routeProvider, $locationProvider) {
+function config($routeProvider, $locationProvider) {
     $routeProvider
         .when('/', {
-            controller: 'CalendarController',
-            templateUrl: '/views/main.html'           
+            templateUrl: '/views/main.html',
+            controller: 'MainCtrl',
+            controllerAs: 'main'                  
         })
         .when('/login', {
-            controller: 'LoginController',
-            templateUrl: '/views/login.html'
+            templateUrl: '/views/login.html',
+            controller: 'LoginCtrl',
+            controllerAs: 'login'
         })
         .otherwise({redirectTo: '/'});
 
     $locationProvider.html5Mode(true);
-});
+}
+
+angular.module('AngularCalendarApp', ['ngRoute', 'AngularCalendarApp.controllers',
+               'AngularCalendarApp.services', 'ui.calendar', 'ui.bootstrap'])
+    .config(config);

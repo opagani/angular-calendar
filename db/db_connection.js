@@ -12,4 +12,4 @@ exports.getDBConnection = function(callback) {
 };
 
 
-// mongoimport --type json --file data.json --db calendar --collection users
+// mongoimport --type json --file ./data/data.json --db calendar --collection users
