@@ -5,11 +5,10 @@ exports.getDBConnection = function(callback) {
    if (currentConn) {
      callback(currentConn);
     } else {
-        MongoClient.connect("mongodb://localhost/", function(err, db) {
-            callback(db.db("calendar"));
+        MongoClient.connect('mongodb://localhost/', function(err, db) {
+            callback(db.db('calendar'));
         });
     }
 };
 
-
-// mongoimport --type json --file ./data/data.json --db calendar --collection users
+// mongoimport --type json --file ./data/users.json --db calendar --collection users
