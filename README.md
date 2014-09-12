@@ -65,7 +65,11 @@ waiting for connections on port 27017
 Import data into the Mongo Database
 ---------------------------------
 
-$ mongoimport --type json --file ./data/users.json --db calendar --collection users
+```bash
+$ cd angular-calendar
+$ bash ./db/seed.sh
+  * mongoimport --db calendar --collection users --file ./db/users.json --jsonArray
+```
 
 Database Models
 ---------------
@@ -90,13 +94,8 @@ How to manipulate data from the Mongo Console
 
 ```bash
 $ mongod
-  * MongoDB shell version: 2.6.4
-    connecting to: test
-```
-
-Then, runs these commands to make sure that the db calendar and collection users were created and the data was imported.
-
-```bash
+MongoDB shell version: 2.6.4
+connecting to: test
 > use calendar
 switched to db calendar
 > db.users.find()
