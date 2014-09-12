@@ -10,5 +10,3 @@ exports.getDBConnection = function(callback) {
         });
     }
 };
-
-// mongoimport --type json --file ./data/users.json --db calendar --collection users

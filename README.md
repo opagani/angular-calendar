@@ -57,8 +57,9 @@ Make sure you added $PATH for the MongoDB location
 
 ```bash
 $ mongod --dbpath /data/db
-  * MongoDB starting: pid =7218 port=27017...this means the MongoDB database server is running. 
-    By default, it’s listening to http://localhost:27017
+MongoDB starting : pid=49735 port=27017 dbpath=/data/db ...
+waiting for connections on port 27017
+... 
 ```
 
 Import data into the Mongo Database
@@ -66,25 +67,42 @@ Import data into the Mongo Database
 
 $ mongoimport --type json --file ./data/users.json --db calendar --collection users
 
+Database Models
+---------------
+```
+Users
+    username: "opagani"
+    name: "Oscar Pagani"
+    days: 10
+```
+```
+Events
+    username: "opagani"
+    id: 999
+    title: "Repeating Event"
+    start: new Date(y, m, d + 1, 19, 0)
+    end: new Date(y, m, d + 1, 22, 30)
+    allDay: false
+```
+
 How to manipulate data from the Mongo Console
 ---------------------------------------------
 
 ```bash
 $ mongod
-  * MongoDB shell version: 2.6.4...connecting to: test
+  * MongoDB shell version: 2.6.4
+    connecting to: test
 ```
 
 Then, runs these commands to make sure that the db calendar and collection users were created and the data was imported.
 
 ```bash
 > use calendar
-  * switched to db calendar
-> use calendar
-  * switched to db calendar
+switched to db calendar
 > db.users.find()
-  * { "_id" : ObjectId("5406708e4349f7b8a02c460d"), "username": "opagani", name" : "Oscar Pagani", "days" : 10 }
-    { "_id" : ObjectId("5406708e4349f7b8a02c460e"), "username": "jperez", "name" : "Joe Perez", "days" : 10 } 
-    ...
+{ "_id" : ObjectId("5412317f4a47123b2b8eae8c"), "username" : "opagani", "name" : "Oscar Pagani", "days" : 10 }
+{ "_id" : ObjectId("5412317f4a47123b2b8eae8d"), "username" : "jperez", "name" : "Joe Perez", "days" : 10 }
+...
 ```
 
 Start the server and run our app

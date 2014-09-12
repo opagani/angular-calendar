@@ -27,6 +27,30 @@ dbConn.getDBConnection(function(currentDB) {
     app.use(express.static(path.join(__dirname, 'app')));
     app.use('/bower_components',  express.static(__dirname + '/bower_components'));
 
+    /// error handlers
+
+    // development error handler
+    // will print stacktrace
+    if (app.get('env') === 'development') {
+        app.use(function(err, req, res, next) {
+            res.status(err.status || 500);
+            res.render('error', {
+                message: err.message,
+                error: err
+            });
+        });
+    }
+
+    // production error handler
+    // no stacktraces leaked to user
+    app.use(function(err, req, res, next) {
+        res.status(err.status || 500);
+        res.render('error', {
+            message: err.message,
+            error: {}
+        });
+    });
+
     require('./routes/index')(app);
 
     require('http').createServer(app).listen(app.get('port'), function () {

@@ -1,0 +1,1 @@
+mongoimport --db calendar --collection users --file ./db/users.json --jsonArray
