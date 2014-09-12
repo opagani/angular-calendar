@@ -12,7 +12,7 @@ After cloning/downloading the app, you need to follow all the installation steps
 Requirements
 ------------
 - ([AngularJS](http://code.angularjs.org/1.2.23/angular.js))
-- ([fullcalendar.js 1.6.4 and it's dependencies](http://arshaw.com/fullcalendar/download/))
+- ([fullcalendar.js 1.6.4 and it's dependencies](https://github.com/arshaw/fullcalendar/releases/tag/v1.6.4))
 - ([ui-calendar](http://angular-ui.github.io/ui-calendar/))
 - ([node.js v0.10.x](http://nodejs.org/download/))
 
@@ -57,7 +57,8 @@ Make sure you added $PATH for the MongoDB location
 
 ```bash
 $ mongod --dbpath /data/db
-  * MongoDB starting: pid =7218 port=27017...this means the MongoDB database server is running. By default, it’s listening to http://localhost:27017
+  * MongoDB starting: pid =7218 port=27017...this means the MongoDB database server is running. 
+    By default, it’s listening to http://localhost:27017
 ```
 
 Import data into the Mongo Database
@@ -82,7 +83,8 @@ Then, runs these commands to make sure that the db calendar and collection users
   * switched to db calendar
 > db.users.find()
   * { "_id" : ObjectId("5406708e4349f7b8a02c460d"), "username": "opagani", name" : "Oscar Pagani", "days" : 10 }
-  * { "_id" : ObjectId("5406708e4349f7b8a02c460e"), "username": "jperez", "name" : "Joe Perez", "days" : 10 } ...
+    { "_id" : ObjectId("5406708e4349f7b8a02c460e"), "username": "jperez", "name" : "Joe Perez", "days" : 10 } 
+    ...
 ```
 
 Start the server and run our app
