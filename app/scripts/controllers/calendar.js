@@ -1,6 +1,6 @@
 'use strict';
 
-function MainCtrl($scope, GetUsersService, UpdateUserDaysService, GetEventsService, CreateEventService,
+function MainCtrl($scope, GetUsersService, GetUserDaysService, UpdateUserDaysService, GetEventsService, CreateEventService,
                   DeleteEventService, UpdateEventService) {
         var date = new Date();
         var d = date.getDate();
@@ -14,8 +14,12 @@ function MainCtrl($scope, GetUsersService, UpdateUserDaysService, GetEventsServi
         $scope.update = function() {
             $scope.username = $scope.selectedItem.username;
             $scope.name = $scope.selectedItem.name;
-            $scope.days = $scope.selectedItem.days;
-            $scope.alertMessage = ($scope.name + ' has ' + $scope.days + ' days');
+
+            GetUserDaysService.getUserDays($scope.username).then(function(days) {
+                $scope.days = days.days;
+                $scope.alertMessage = ($scope.name + ' has ' + $scope.days + ' days');
+            });
+            
             $scope.events.length = 0;
             GetEventsService.getEvents($scope.username).then(function(events) {
                 events.forEach(function(event) {
@@ -85,8 +89,8 @@ function MainCtrl($scope, GetUsersService, UpdateUserDaysService, GetEventsServi
 
         /* alert on Resize */
         $scope.alertOnResize = function(event, dayDelta, minuteDelta, revertFunc, jsEvent, ui, view ) {
-            UpdateUserDaysService.updateUserDays($scope.name, dayDelta).then(function() {
-                $scope.days -= dayDelta;
+            UpdateUserDaysService.updateUserDays($scope.name, -dayDelta).then(function() {
+                $scope.days += -dayDelta;
                 $scope.alertMessage = ($scope.name + ' has ' + $scope.days + ' days');
             });
 

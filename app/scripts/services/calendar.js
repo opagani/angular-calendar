@@ -19,6 +19,25 @@ function GetUsersService($q, $http) {
     };
 }
 
+function GetUserDaysService($q, $http) {
+    this.getUserDays = function(username) {
+        var d = $q.defer();
+
+        $http({
+            method: 'GET', 
+            url: '/user/days/' + username
+        })
+        .then(function(response) {
+            var days = response.data;
+            d.resolve(days);
+        },
+        function(error) {
+            d.reject(error);
+        });
+        return d.promise;
+    };
+}
+
 function UpdateUserDaysService($q, $http) {
     this.updateUserDays = function(name, dayDelta) {
         var d = $q.defer();
@@ -105,7 +124,7 @@ function UpdateEventService($q, $http) {
 
         $http({
             method: 'POST', 
-            url: '/event/update/',
+            url: '/event/update',
             data: updatedEvent
         })
         .then(function(response) {
@@ -121,6 +140,7 @@ function UpdateEventService($q, $http) {
 
 angular.module('AngularCalendarApp.services', [])
     .service('GetUsersService', GetUsersService)
+    .service('GetUserDaysService', GetUserDaysService)
     .service('UpdateUserDaysService', UpdateUserDaysService)
     .service('GetEventsService', GetEventsService)
     .service('CreateEventService', CreateEventService)

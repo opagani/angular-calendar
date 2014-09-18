@@ -15,8 +15,17 @@ exports.getUsers = function(req, res) {
         if (!users) {
             res.json(404, { err: 'Users Not Found.' });
         } else {
-            console.log(users);
             res.json(users);
+        }
+    });
+};
+
+exports.getUserDays = function(req, res) {
+    users.findOne({ username: req.params.username }, { days: 1, _id: 0 }, function(err, days) {
+        if (!users) {
+            res.json(404, { err: 'User Not Found.' });
+        } else {
+            res.json(days);
         }
     });
 };
