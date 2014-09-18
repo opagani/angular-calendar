@@ -6,7 +6,11 @@ module.exports = function(app) {
         res.render('index', { title: 'Express' });
     });
 
-    var users = require('./users_controller');
-    app.get('/users', users.getUsers);
-    app.post('/user/days/update', users.updateUserDays);
+    var db_controller = require('./db_controller');
+    app.get('/users', db_controller.getUsers);
+    app.post('/user/days/update', db_controller.updateUserDays);
+    app.get('/events/:username', db_controller.getEvents);
+    app.post('/event/create', db_controller.createEvent);
+    app.post('/event/delete/:id', db_controller.deleteEvent);
+    app.post('/event/update', db_controller.updateEvent);
 };

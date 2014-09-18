@@ -1,6 +1,7 @@
 'use strict';
 
-function MainCtrl($scope, GetUsersService, UpdateUserDaysService) {
+function MainCtrl($scope, GetUsersService, UpdateUserDaysService, GetEventsService, CreateEventService,
+                  DeleteEventService, UpdateEventService) {
         var date = new Date();
         var d = date.getDate();
         var m = date.getMonth();
@@ -11,9 +12,22 @@ function MainCtrl($scope, GetUsersService, UpdateUserDaysService) {
         });
         
         $scope.update = function() {
+            $scope.username = $scope.selectedItem.username;
             $scope.name = $scope.selectedItem.name;
             $scope.days = $scope.selectedItem.days;
             $scope.alertMessage = ($scope.name + ' has ' + $scope.days + ' days');
+            $scope.events.length = 0;
+            GetEventsService.getEvents($scope.username).then(function(events) {
+                events.forEach(function(event) {
+                    $scope.events.push(event);
+                });
+            });
+        };
+
+        $scope.changeTitle = function(event) {
+            UpdateEventService.updateEvent(event).then(function() {
+                console.log("Event updated.");
+            });
         };
         
         $scope.changeTo = 'Spanish';
@@ -32,8 +46,9 @@ function MainCtrl($scope, GetUsersService, UpdateUserDaysService) {
             {id: 999,title: 'Repeating Event',start: new Date(y, m, d - 3, 16, 0),allDay: false},
             {id: 999,title: 'Repeating Event',start: new Date(y, m, d + 4, 16, 0),allDay: false},
             {title: 'Birthday Party',start: new Date(y, m, d + 1, 19, 0),end: new Date(y, m, d + 1, 22, 30),allDay: false},
-            {title: 'Click for Google',start: new Date(y, m, 28),end: new Date(y, m, 29),url: 'http://google.com/'}
-        */];
+            {title: 'Click for Google',start: new Date(y, m, 28),end: new Date(y, m, 29),url: 'http://google.com/'}*/
+        ];
+
 
         /* event source that calls a function on every view switch */
         $scope.eventsF = function(start, end, callback) {
@@ -61,8 +76,11 @@ function MainCtrl($scope, GetUsersService, UpdateUserDaysService) {
 
         /* alert on Drop */
         $scope.alertOnDrop = function(event, dayDelta, minuteDelta, allDay, revertFunc, jsEvent, ui, view) {
-            //$scope.alertMessage = ('Event Droped to make dayDelta ' + dayDelta);
             $scope.alertMessage = ($scope.name + ' has ' + $scope.days + ' days');
+
+            UpdateEventService.updateEvent(event).then(function() {
+                console.log("Event updated.");
+            });
         };
 
         /* alert on Resize */
@@ -70,6 +88,10 @@ function MainCtrl($scope, GetUsersService, UpdateUserDaysService) {
             UpdateUserDaysService.updateUserDays($scope.name, dayDelta).then(function() {
                 $scope.days -= dayDelta;
                 $scope.alertMessage = ($scope.name + ' has ' + $scope.days + ' days');
+            });
+
+            UpdateEventService.updateEvent(event).then(function() {
+                console.log("Event updated.");
             });
         };
 
@@ -89,26 +111,45 @@ function MainCtrl($scope, GetUsersService, UpdateUserDaysService) {
 
         /* add custom event*/
         $scope.addEvent = function() {
-            $scope.events.unshift({
+            var newEvent = {
+                username: $scope.username,
                 title: 'New Event',
-                start: new Date(),
-                end: new Date(),
+                start: new Date(y, m, d),
+                end: new Date(y, m, d),
                 className: ['new-event']
-            });
+            };
 
             UpdateUserDaysService.updateUserDays($scope.name, -1).then(function() {
                 $scope.days += -1;
                 $scope.alertMessage = ($scope.name + ' has ' + $scope.days + ' days');
-            });   
+            });
+
+            CreateEventService.createEvent(newEvent).then(function(event) {
+                $scope.events.unshift(event);
+                console.log("Event created.");
+            }); 
         };
 
         /* remove event */
         $scope.remove = function(index) {
-            $scope.events.splice(index, 1);
-            // TODO - FIX remove function for an event that has more than one day
-            UpdateUserDaysService.updateUserDays($scope.name, 1).then(function() {
-                $scope.days += 1;
+            var id = $scope.events[index]._id;
+            var end = $scope.events[index].end;
+            var start = $scope.events[index].start;
+
+            if (!end) {
+                end = start;
+            }
+
+            var dayDelta = (end.getTime() - start.getTime())/(24*60*60*1000) + 1;
+
+            UpdateUserDaysService.updateUserDays($scope.name, dayDelta).then(function() {
+                $scope.days += dayDelta;
                 $scope.alertMessage = ($scope.name + ' has ' + $scope.days + ' days');
+            });
+
+            DeleteEventService.deleteEvent(id).then(function() {
+                $scope.events.splice(index, 1);
+                console.log("Event deleted.");
             });
         };
 

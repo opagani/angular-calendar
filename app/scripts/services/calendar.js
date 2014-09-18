@@ -41,6 +41,88 @@ function UpdateUserDaysService($q, $http) {
     };
 }
 
+function GetEventsService($q, $http) {
+    this.getEvents = function(username) {
+        var d = $q.defer();
+
+        $http({
+            method: 'GET', 
+            url: '/events/' + username
+        })
+        .then(function(response) {
+            var events = response.data;
+            d.resolve(events);
+        },
+        function(error) {
+            d.reject(error);
+        });
+        return d.promise;
+    };
+}
+
+function CreateEventService($q, $http) {
+    this.createEvent = function(newEvent) {
+        var d = $q.defer();
+
+        $http({
+            method: 'POST', 
+            url: '/event/create',
+            data: newEvent
+        })
+        .then(function(response) {
+            var event = response.data;
+            d.resolve(event);
+        },
+        function(error) {
+            d.reject(error);
+        });
+        return d.promise;
+    };
+}
+
+function DeleteEventService($q, $http) {
+    this.deleteEvent = function(id) {
+        var d = $q.defer();
+
+        $http({
+            method: 'POST', 
+            url: '/event/delete/' + id
+        })
+        .then(function(response) {
+            var event = response.data;
+            d.resolve(event);
+        },
+        function(error) {
+            d.reject(error);
+        });
+        return d.promise;
+    };
+}
+
+function UpdateEventService($q, $http) {
+    this.updateEvent = function(updatedEvent) {
+        var d = $q.defer();
+
+        $http({
+            method: 'POST', 
+            url: '/event/update/',
+            data: updatedEvent
+        })
+        .then(function(response) {
+            var event = response.data;
+            d.resolve(event);
+        },
+        function(error) {
+            d.reject(error);
+        });
+        return d.promise;
+    };
+}
+
 angular.module('AngularCalendarApp.services', [])
     .service('GetUsersService', GetUsersService)
-    .service('UpdateUserDaysService', UpdateUserDaysService);
+    .service('UpdateUserDaysService', UpdateUserDaysService)
+    .service('GetEventsService', GetEventsService)
+    .service('CreateEventService', CreateEventService)
+    .service('DeleteEventService', DeleteEventService)
+    .service('UpdateEventService', UpdateEventService);

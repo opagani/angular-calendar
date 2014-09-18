@@ -67,6 +67,7 @@ Import data into the Mongo Database
 
 ```bash
 $ cd angular-calendar
+$ chmod 755 ./db/seed.sh
 $ bash ./db/seed.sh
   * mongoimport --db calendar --collection users --file ./db/users.json --jsonArray
 ```
@@ -82,11 +83,9 @@ Users
 ```
 Events
     username: "opagani"
-    id: 999
     title: "Repeating Event"
     start: new Date(y, m, d + 1, 19, 0)
     end: new Date(y, m, d + 1, 22, 30)
-    allDay: false
 ```
 
 How to manipulate data from the Mongo Console
