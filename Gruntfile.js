@@ -86,7 +86,7 @@ module.exports = function(grunt) {
         files: [ 'app/less/{,*/}*.less', 'app/styles/main.css' ],
         tasks: [ 'newer:less:dist', 'autoprefixer:dist' ],
         options: {
-          livereload: true
+          //livereload: true
         }
       },
       scripts: {
@@ -96,7 +96,7 @@ module.exports = function(grunt) {
       server: {
         files: ['.rebooted'],
         options: {
-          livereload: true
+          //livereload: true
         }
       } 
     },

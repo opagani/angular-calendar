@@ -26,6 +26,7 @@ dbConn.getDBConnection(function(currentDB) {
     app.use(require('less-middleware')(path.join(__dirname, 'app')));
     app.use(express.static(path.join(__dirname, 'app')));
     app.use('/bower_components',  express.static(__dirname + '/bower_components'));
+    app.use('/lib',  express.static(__dirname + '/lib'));
 
     /// error handlers
 

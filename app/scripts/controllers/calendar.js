@@ -9,11 +9,13 @@ function MainCtrl($scope, GetUsersService, GetUserDaysService, UpdateUserDaysSer
 
         GetUsersService.getUsers().then(function(users) {
             $scope.users = users;
+            $scope.isUserDisabled = true;
         });
         
         $scope.update = function() {
             $scope.username = $scope.selectedItem.username;
             $scope.name = $scope.selectedItem.name;
+            $scope.isUserDisabled = false;
 
             GetUserDaysService.getUserDays($scope.username).then(function(days) {
                 $scope.days = days.days;
@@ -29,7 +31,8 @@ function MainCtrl($scope, GetUsersService, GetUserDaysService, UpdateUserDaysSer
         };
 
         $scope.changeTitle = function(event) {
-            UpdateEventService.updateEvent(event).then(function() {
+            var updatedEvent = JSON.stringify(JSON.decycle(event));
+            UpdateEventService.updateEvent(updatedEvent).then(function() {
                 console.log("Event updated.");
             });
         };
@@ -56,21 +59,21 @@ function MainCtrl($scope, GetUsersService, GetUserDaysService, UpdateUserDaysSer
 
         /* event source that calls a function on every view switch */
         $scope.eventsF = function(start, end, callback) {
-            var s = new Date(start).getTime() / 1000;
+            /*var s = new Date(start).getTime() / 1000;
             var e = new Date(end).getTime() / 1000;
             var m = new Date(start).getMonth();
             var events = [{title: 'Feed Me ' + m,start: s + (50000),end: s + (100000),allDay: false, className: ['customFeed']}];
-            callback(events);
+            callback(events);*/
         };
 
         $scope.calEventsExt = {
-            color: '#f00',
+            /*color: '#f00',
             textColor: 'yellow',
             events: [ 
                 {type:'party',title: 'Lunch',start: new Date(y, m, d, 12, 0),end: new Date(y, m, d, 14, 0),allDay: false},
                 {type:'party',title: 'Lunch 2',start: new Date(y, m, d, 12, 0),end: new Date(y, m, d, 14, 0),allDay: false},
                 {type:'party',title: 'Click for Google',start: new Date(y, m, 28),end: new Date(y, m, 29),url: 'http://google.com/'}
-            ]
+            ]*/
         };
 
         /* alert on eventClick */
@@ -80,11 +83,14 @@ function MainCtrl($scope, GetUsersService, GetUserDaysService, UpdateUserDaysSer
 
         /* alert on Drop */
         $scope.alertOnDrop = function(event, dayDelta, minuteDelta, allDay, revertFunc, jsEvent, ui, view) {
-            $scope.alertMessage = ($scope.name + ' has ' + $scope.days + ' days');
-
-            UpdateEventService.updateEvent(event).then(function() {
+            // the arshaw fullcalendar v1 creates a circular reference to its own events.
+            // we use Douglas Crockford's library cycle.js to break this cycle.
+            var updatedEvent = JSON.stringify(JSON.decycle(event));
+            UpdateEventService.updateEvent(updatedEvent).then(function() {
                 console.log("Event updated.");
             });
+
+            $scope.alertMessage = ($scope.name + ' has ' + $scope.days + ' days');
         };
 
         /* alert on Resize */
@@ -94,7 +100,8 @@ function MainCtrl($scope, GetUsersService, GetUserDaysService, UpdateUserDaysSer
                 $scope.alertMessage = ($scope.name + ' has ' + $scope.days + ' days');
             });
 
-            UpdateEventService.updateEvent(event).then(function() {
+            var updatedEvent = JSON.stringify(JSON.decycle(event));
+            UpdateEventService.updateEvent(updatedEvent).then(function() {
                 console.log("Event updated.");
             });
         };

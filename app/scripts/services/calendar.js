@@ -125,7 +125,7 @@ function UpdateEventService($q, $http) {
         $http({
             method: 'POST', 
             url: '/event/update',
-            data: updatedEvent
+            data: JSON.parse(updatedEvent)
         })
         .then(function(response) {
             var event = response.data;

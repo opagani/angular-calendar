@@ -1,11 +1,6 @@
 <div class="hero-unit">
   <div class="container">
-    <h1>Angular Calendar</h1>
-    <p>AngularJS calendar for the <a href="http://arshaw.com/fullcalendar/">Arshaw FullCalendar</a>.</p>
-    <p class="btn-group">
-      <a href="https://github.com/opagani/angular-calendar" class="btn btn-default"><i class="glyphicon white"></i> Code on Github</a>
-      <a href="https://github.com/opagani/angular-calendar/archive/master.zip" class="btn btn-primary"><i class="glyphicon glyphicon-download-alt white"></i> Download <small>(0.1.0)</small></a>
-    </p>
+    <h1>Personal Project Days Calendar</h1>
   </div>
 </div>
 
@@ -13,7 +8,7 @@
   <div class="container">
     <section id="directives-calendar">
       <div class="page-header">
-        <h1>Angular Calendar</h1>
+        <h1>Personal Project Days Calendar</h1>
       </div>
       <div class="well">
         <div class="row">
@@ -28,7 +23,7 @@
             <div class="btn-group calTools">
               <button class="btn" ng-click="changeLang()">{{changeTo}}</button>              
               <button class="btn" ng-click="addRemoveEventSource(eventSources, eventSource)">Toggle Source</button>
-              <button type="button" class="btn btn-primary" ng-click="addEvent()">Add Event</button>
+              <button type="button" ng-disabled="isUserDisabled" class="btn btn-primary" ng-click="addEvent()">Add Event</button>
             </div>
 
             <ul class="unstyled">
