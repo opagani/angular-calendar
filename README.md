@@ -3,9 +3,9 @@ angular-calendar
 
 This is a sample app based on Arshaw FullCalendar and Joshkurz ui-calendar directive that uses the MEAN stack:  MongoDB, Express.js, AngularJS and Node.js.
 
-The app shows a list of users, drills down to an individual user showing its calendar events and number of days left to complete a project.  The app let's you add, change and delete events for a user.  The data is persistent and it is kept in the MongoDB database.
+The app shows a list of users, their calendar events and their number of days.  The app let's you add, change and delete events for a user.  The data is persistent and it is kept in the MongoDB database.
 
-Every user starts with a fixed number of days (let's say 10 days).  Every time you add a day event in the calendar for a user, the number of days decreases by one.  If you delete a day event for a particular user, the number of days increases accordingly. 
+Every time you add a day event in the calendar for a user, the number of days increases by one.  If you delete a day event for a particular user, the number of days decreases accordingly. 
 
 After cloning/downloading the app, you need to follow all the installation steps including the MongoDB installation.  Then, you need to run the Mongo Server, import data into the Mongo Database and start the  app server.
 
