@@ -65,3 +65,8 @@ section {
 .calTools{
     margin-bottom: 10px;
 }
+
+.alert {
+    padding: 5px;
+    margin-bottom: 10px;
+}

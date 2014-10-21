@@ -19,54 +19,13 @@ function GetUsersService($q, $http) {
     };
 }
 
-function GetUserDaysService($q, $http) {
-    this.getUserDays = function(username) {
-        var d = $q.defer();
-
-        $http({
-            method: 'GET', 
-            url: '/user/days/' + username
-        })
-        .then(function(response) {
-            var days = response.data;
-            d.resolve(days);
-        },
-        function(error) {
-            d.reject(error);
-        });
-        return d.promise;
-    };
-}
-
-function UpdateUserDaysService($q, $http) {
-    this.updateUserDays = function(name, dayDelta) {
-        var d = $q.defer();
-
-        $http({
-            method: 'POST', 
-            url: '/user/days/update',
-            data: { 
-                name: name,
-                dayDelta: dayDelta
-            }
-        })
-        .then(function(response) {
-            d.resolve();
-        },
-        function(error) {
-            d.reject(error);
-        });
-        return d.promise;
-    };
-}
-
 function GetEventsService($q, $http) {
-    this.getEvents = function(username) {
+    this.getEvents = function() {
         var d = $q.defer();
 
         $http({
             method: 'GET', 
-            url: '/events/' + username
+            url: '/events'
         })
         .then(function(response) {
             var events = response.data;
@@ -100,12 +59,14 @@ function CreateEventService($q, $http) {
 }
 
 function DeleteEventService($q, $http) {
-    this.deleteEvent = function(id) {
+    this.deleteEvent = function(deletedEvent) {
         var d = $q.defer();
+        var deletedEventObj = JSON.parse(deletedEvent);
 
         $http({
             method: 'POST', 
-            url: '/event/delete/' + id
+            url: '/event/delete/' + deletedEventObj._id,
+            data: deletedEventObj
         })
         .then(function(response) {
             var event = response.data;
@@ -138,11 +99,61 @@ function UpdateEventService($q, $http) {
     };
 }
 
+function ModalService($modal) {
+
+    var modalDefaults = {
+        backdrop: true,
+        keyboard: true,
+        modalFade: true,
+        templateUrl: '/views/modal.html'
+    };
+
+    var modalOptions = {
+        closeButtonText: 'Cancel',
+        actionButtonText: 'Delete',
+        headerText: 'Proceed?',
+        bodyText: 'Are you sure you want to delete this event?'
+    };
+
+    this.showModal = function (customModalDefaults, customModalOptions) {
+        if (!customModalDefaults) {
+            customModalDefaults = {};
+        }
+        customModalDefaults.backdrop = 'static';
+        return this.show(customModalDefaults, customModalOptions);
+    };
+
+    this.show = function (customModalDefaults, customModalOptions) {
+        //Create temp objects to work with since we're in a singleton service
+        var tempModalDefaults = {};
+        var tempModalOptions = {};
+
+        //Map angular-ui modal custom defaults to modal defaults defined in service
+        angular.extend(tempModalDefaults, modalDefaults, customModalDefaults);
+
+        //Map modal.html $scope custom properties to defaults defined in service
+        angular.extend(tempModalOptions, modalOptions, customModalOptions);
+
+        if (!tempModalDefaults.controller) {
+            tempModalDefaults.controller = function ($scope, $modalInstance) {
+                $scope.modalOptions = tempModalOptions;
+                $scope.modalOptions.ok = function (result) {
+                    $modalInstance.close(result);
+                };
+                $scope.modalOptions.close = function (result) {
+                    $modalInstance.dismiss('cancel');
+                };
+            };
+        }
+
+        return $modal.open(tempModalDefaults).result;
+    };
+}
+
 angular.module('AngularCalendarApp.services', [])
     .service('GetUsersService', GetUsersService)
-    .service('GetUserDaysService', GetUserDaysService)
-    .service('UpdateUserDaysService', UpdateUserDaysService)
     .service('GetEventsService', GetEventsService)
     .service('CreateEventService', CreateEventService)
     .service('DeleteEventService', DeleteEventService)
-    .service('UpdateEventService', UpdateEventService);
+    .service('UpdateEventService', UpdateEventService)
+    .service('ModalService', ['$modal', ModalService]);

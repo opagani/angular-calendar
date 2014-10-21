@@ -1,50 +1,21 @@
 'use strict';
 
-function MainCtrl($scope, GetUsersService, GetUserDaysService, UpdateUserDaysService, GetEventsService, CreateEventService,
-                  DeleteEventService, UpdateEventService) {
+function MainCtrl($scope, GetUsersService, GetEventsService, CreateEventService, DeleteEventService, UpdateEventService, ModalService) {
         var date = new Date();
         var d = date.getDate();
         var m = date.getMonth();
         var y = date.getFullYear();
 
-        GetUsersService.getUsers().then(function(users) {
-            $scope.users = users;
-            $scope.isUserDisabled = true;
-        });
-        
-        $scope.update = function() {
-            $scope.username = $scope.selectedItem.username;
-            $scope.name = $scope.selectedItem.name;
-            $scope.isUserDisabled = false;
+        $scope.minValue = 0;
 
-            GetUserDaysService.getUserDays($scope.username).then(function(days) {
-                $scope.days = days.days;
-                $scope.alertMessage = ($scope.name + ' has ' + $scope.days + ' days');
-            });
-            
-            $scope.events.length = 0;
-            GetEventsService.getEvents($scope.username).then(function(events) {
-                events.forEach(function(event) {
-                    $scope.events.push(event);
-                });
+        $scope.refreshState = function() {
+            GetUsersService.getUsers().then(function(users) {
+                $scope.users = users;
+                $scope.isUserDisabled = true;
             });
         };
 
-        $scope.changeTitle = function(event) {
-            var updatedEvent = JSON.stringify(JSON.decycle(event));
-            UpdateEventService.updateEvent(updatedEvent).then(function() {
-                console.log("Event updated.");
-            });
-        };
-        
-        $scope.changeTo = 'Spanish';
-
-        /* event source that pulls from google.com */
-        $scope.eventSource = {
-            url: "http://www.google.com/calendar/feeds/usa__en%40holiday.calendar.google.com/public/basic",
-            className: 'gcal-event',           // an option!
-            currentTimezone: 'America/Los_Angeles' // an option!
-        };
+        $scope.refreshState();
 
         /* event source that contains custom events on the scope */
         $scope.events = [
@@ -56,29 +27,63 @@ function MainCtrl($scope, GetUsersService, GetUserDaysService, UpdateUserDaysSer
             {title: 'Click for Google',start: new Date(y, m, 28),end: new Date(y, m, 29),url: 'http://google.com/'}*/
         ];
 
+        GetEventsService.getEvents().then(function(events) {
+           events.forEach(function(event) {
+               $scope.events.push(event);
+            });
+        });
 
-        /* event source that calls a function on every view switch */
-        $scope.eventsF = function(start, end, callback) {
-            /*var s = new Date(start).getTime() / 1000;
-            var e = new Date(end).getTime() / 1000;
-            var m = new Date(start).getMonth();
-            var events = [{title: 'Feed Me ' + m,start: s + (50000),end: s + (100000),allDay: false, className: ['customFeed']}];
-            callback(events);*/
+        $scope.convertDate = function(date) {
+            var dateString = "";
+            var newDate = new Date(date);
+
+            // Get the month, day, and year.
+            dateString += (newDate.getMonth() + 1) + "/";
+            dateString += newDate.getDate() + "/";
+            dateString += newDate.getFullYear();
+
+            return dateString;
         };
 
-        $scope.calEventsExt = {
-            /*color: '#f00',
-            textColor: 'yellow',
-            events: [ 
-                {type:'party',title: 'Lunch',start: new Date(y, m, d, 12, 0),end: new Date(y, m, d, 14, 0),allDay: false},
-                {type:'party',title: 'Lunch 2',start: new Date(y, m, d, 12, 0),end: new Date(y, m, d, 14, 0),allDay: false},
-                {type:'party',title: 'Click for Google',start: new Date(y, m, 28),end: new Date(y, m, 29),url: 'http://google.com/'}
-            ]*/
+        $scope.findObjIdFromArray = function(arr, id) {
+            for (var i=0; i<arr.length; i++) {
+                if (arr[i]._id === id) {
+                    return i;
+                }
+            }
+            return -1;
+        };
+        
+        $scope.update = function() {
+            $scope.username = $scope.selectedItem.username;
+            $scope.name = $scope.selectedItem.name;
+            $scope.isUserDisabled = false;
+        };
+
+        /* event source that pulls from google.com */
+        $scope.eventSource = {
+            url: "http://www.google.com/calendar/feeds/usa__en%40holiday.calendar.google.com/public/basic",
+            className: 'gcal-event',           // an option!
+            currentTimezone: 'America/Los_Angeles' // an option!
         };
 
         /* alert on eventClick */
         $scope.alertOnEventClick = function(event, allDay, jsEvent, view) {
-            $scope.alertMessage = (event.title + ' was clicked ');
+            if (!event.end) {
+                event.end = event.start;
+            }
+
+            var modalOptions = {
+                closeButtonText: 'Cancel',
+                actionButtonText: 'Delete Event',
+                headerText: 'Delete ' +  event.title +  '  ' + $scope.convertDate(event.start) + ' - ' + 
+                    $scope.convertDate(event.end) + '?',
+                bodyText: 'Are you sure you want to delete this event?'          
+            };
+
+            ModalService.showModal({}, modalOptions).then(function(result) {
+                $scope.deleteEvent(event);
+            });
         };
 
         /* alert on Drop */
@@ -89,78 +94,45 @@ function MainCtrl($scope, GetUsersService, GetUserDaysService, UpdateUserDaysSer
             UpdateEventService.updateEvent(updatedEvent).then(function() {
                 console.log("Event updated.");
             });
-
-            $scope.alertMessage = ($scope.name + ' has ' + $scope.days + ' days');
         };
 
         /* alert on Resize */
         $scope.alertOnResize = function(event, dayDelta, minuteDelta, revertFunc, jsEvent, ui, view ) {
-            UpdateUserDaysService.updateUserDays($scope.name, -dayDelta).then(function() {
-                $scope.days += -dayDelta;
-                $scope.alertMessage = ($scope.name + ' has ' + $scope.days + ' days');
-            });
+            if (!event.end) {
+                event.end = event.start;
+            }
 
             var updatedEvent = JSON.stringify(JSON.decycle(event));
             UpdateEventService.updateEvent(updatedEvent).then(function() {
                 console.log("Event updated.");
+                $scope.refreshState();
             });
-        };
-
-        /* add and removes an event source of choice */
-        $scope.addRemoveEventSource = function(sources, source) {
-            var canAdd = 0;
-            angular.forEach(sources, function(value, key){
-                if(sources[key] === source){
-                    sources.splice(key, 1);
-                    canAdd = 1;
-                }
-            });
-            if(canAdd === 0){
-                sources.push(source);
-            }
         };
 
         /* add custom event*/
         $scope.addEvent = function() {
             var newEvent = {
                 username: $scope.username,
-                title: 'New Event',
+                title: $scope.name,
                 start: new Date(y, m, d),
-                end: new Date(y, m, d),
-                className: ['new-event']
+                end: new Date(y, m, d)
             };
-
-            UpdateUserDaysService.updateUserDays($scope.name, -1).then(function() {
-                $scope.days += -1;
-                $scope.alertMessage = ($scope.name + ' has ' + $scope.days + ' days');
-            });
 
             CreateEventService.createEvent(newEvent).then(function(event) {
                 $scope.events.unshift(event);
                 console.log("Event created.");
-            }); 
+                $scope.refreshState();
+            });
         };
 
         /* remove event */
-        $scope.remove = function(index) {
-            var id = $scope.events[index]._id;
-            var end = $scope.events[index].end;
-            var start = $scope.events[index].start;
-
-            if (!end) {
-                end = start;
-            }
-
-            var dayDelta = (end.getTime() - start.getTime())/(24*60*60*1000) + 1;
-
-            UpdateUserDaysService.updateUserDays($scope.name, dayDelta).then(function() {
-                $scope.days += dayDelta;
-                $scope.alertMessage = ($scope.name + ' has ' + $scope.days + ' days');
-            });
-
-            DeleteEventService.deleteEvent(id).then(function() {
+        $scope.deleteEvent = function(event) {
+            var index = $scope.findObjIdFromArray($scope.events, event._id);
+            var deletedEvent = JSON.stringify(JSON.decycle(event));
+            DeleteEventService.deleteEvent(deletedEvent).then(function() {
                 $scope.events.splice(index, 1);
                 console.log("Event deleted.");
+                $scope.refreshState();
             });
         };
 
@@ -192,23 +164,8 @@ function MainCtrl($scope, GetUsersService, GetUserDaysService, UpdateUserDaysSer
             }
         };
 
-        $scope.changeLang = function() {
-            if($scope.changeTo === 'Spanish'){
-                $scope.uiConfig.calendar.dayNames = ["Domingo", "Lunes", "Martes", "Miercoles", "Jueves", "Viernes", "Sabado"];
-                $scope.uiConfig.calendar.dayNamesShort = ["Dom", "Lun", "Mar", "Mie", "Jue", "Vie", "Sab"];
-                $scope.changeTo= 'English';
-            } else {
-                $scope.uiConfig.calendar.dayNames = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
-                $scope.uiConfig.calendar.dayNamesShort = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
-                $scope.changeTo = 'Spanish';
-            }
-        };
-
         /* event sources array*/
-        //$scope.eventSources = [$scope.events, $scope.eventSource, $scope.eventsF];
         $scope.eventSources = [$scope.events, $scope.eventSource];
-
-        $scope.eventSources2 = [$scope.calEventsExt, $scope.eventsF, $scope.events];
 }
 
 angular.module('AngularCalendarApp.controllers')

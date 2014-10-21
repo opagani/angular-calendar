@@ -1,6 +1,6 @@
 <div class="hero-unit">
   <div class="container">
-    <h1>Personal Project Days Calendar</h1>
+    <h1>Angular Calendar</h1>
   </div>
 </div>
 
@@ -8,31 +8,34 @@
   <div class="container">
     <section id="directives-calendar">
       <div class="page-header">
-        <h1>Personal Project Days Calendar</h1>
+        <h1>Angular Calendar</h1>
       </div>
       <div class="well">
         <div class="row">
           <div class="col-md-4">
-            <h3>People</h3>
-            <p>Please select a person:</p>
+            <h4>Please select a person to add an event:</h4>
             
             <select class="form-control calTools" ng-options="user as user.name for user in users" 
               ng-model="selectedItem" ng-change="update()">
             </select>
 
-            <div class="btn-group calTools">
-              <button class="btn" ng-click="changeLang()">{{changeTo}}</button>              
-              <button class="btn" ng-click="addRemoveEventSource(eventSources, eventSource)">Toggle Source</button>
-              <button type="button" ng-disabled="isUserDisabled" class="btn btn-primary" ng-click="addEvent()">Add Event</button>
+            <div class="form-group">
+              <div class="btn-group calTools">
+                <div class="col-sm-4">
+                  <button type="button" ng-disabled="isUserDisabled" class="btn btn-primary" ng-click="addEvent()">Add Event</button>
+                </div>
+                <label for="minValue" class="col-sm-5 control-label">Filter by days:</label>
+                <div class="col-sm-3">
+                 <input type="text" class="form-control" id="minValue" ng-model="minValue">
+                </div>
+              </div>  
             </div>
 
             <ul class="unstyled">
-              <li ng-repeat="e in events">
+              <li ng-repeat="user in users | gt:minValue">
                 <div class="alert alert-info">
-                  <a class="close" ng-click="remove($index)"><i class="glyphicon glyphicon-remove"></i></a>
-                  <b> <input ng-model="e.title" ng-change="changeTitle(e)"></b> 
-                  {{e.start | date:"MMM dd"}} - {{e.end | date:"MMM dd"}}
-                </div>
+                  <b> <input disabled ng-model="user.name"></b> 
+                  {{ user.days + " days" }}
               </li>
             </ul>
           </div>
@@ -41,7 +44,7 @@
             <tabset>
               <tab select="renderCalender(myCalendar1);">
                 <tab-heading>
-                  <i class="glyphicon glyphicon-bell"></i> Calendar One
+                  <i class="glyphicon glyphicon-bell"></i> Calendar
                 </tab-heading>
                 <div class="alert-success calAlert" ng-show="alertMessage != undefined && alertMessage != ''">
                   <h4>{{alertMessage}}</h4>
@@ -49,8 +52,6 @@
                 <div class="btn-toolbar">
                   <p class="pull-right lead">Calendar One View Options</p>
                   <div class="btn-group">
-                    <button class="btn btn-success" ng-click="changeView('agendaDay', myCalendar1)">AgendaDay</button>
-                    <button class="btn btn-success" ng-click="changeView('agendaWeek', myCalendar1)">AgendaWeek</button>
                     <button class="btn btn-success" ng-click="changeView('month', myCalendar1)">Month</button>
                   </div>
                 </div>
@@ -58,41 +59,6 @@
                 <div class="calendar" ng-model="eventSources" calendar="myCalendar1" config="uiConfig.calendar" ui-calendar="uiConfig.calendar"></div>
               </tab>
 
-              <tab select="renderCalender(myCalendar2);">
-                <tab-heading>
-                  <i class="glyphicon glyphicon-bell"></i> Calendar Two
-                </tab-heading>
-                <div class="alert-success calAlert" ng-show="alertMessage != undefined && alertMessage != ''">
-                  <h4>{{alertMessage}}</h4>
-                </div>
-                <div class="btn-toolbar">
-                  <p class="pull-right lead">Calendar Two View Options</p>
-                  <div class="btn-group">
-                    <button class="btn btn-success" ng-click="changeView('agendaDay', myCalendar2)">AgendaDay</button>
-                    <button class="btn btn-success" ng-click="changeView('agendaWeek', myCalendar2)">AgendaWeek</button>
-                    <button class="btn btn-success" ng-click="changeView('month', myCalendar2)">Month</button>
-                  </div>
-                </div>
-                <div class="calendar" ng-model="eventSources" calendar="myCalendar2" config="uiConfig.calendar" ui-calendar="uiConfig.calendar"></div>
-              </tab>
-
-              <tab select="renderCalender(myCalendar3);">
-                <tab-heading>
-                  <i class="glyphicon glyphicon-bell"></i> Calendar Three
-                </tab-heading>
-                <div class="alert-success calAlert">
-                  <h4>This calendar uses the extended form</h4>
-                </div>
-                <div class="btn-toolbar">
-                  <p class="pull-right lead">Calendar Three View Options</p>
-                  <div class="btn-group">
-                    <button class="btn btn-success" ng-click="changeView('agendaDay', myCalendar3)">AgendaDay</button>
-                    <button class="btn btn-success" ng-click="changeView('agendaWeek', myCalendar3)">AgendaWeek</button>
-                    <button class="btn btn-success" ng-click="changeView('month', myCalendar3)">Month</button>
-                  </div>
-                </div>
-                <div class="calendar" ng-model="eventSources2" calendar="myCalendar3" config="uiConfig.calendar" ui-calendar="uiConfig.calendar"></div>
-              </tab>
             </tabset>
           </div>
         </div>

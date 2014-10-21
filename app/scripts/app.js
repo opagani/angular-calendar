@@ -17,6 +17,6 @@ function config($routeProvider, $locationProvider) {
     $locationProvider.html5Mode(true);
 }
 
-angular.module('AngularCalendarApp', ['ngRoute', 'AngularCalendarApp.controllers',
+angular.module('AngularCalendarApp', ['ngRoute', 'AngularCalendarApp.filters', 'AngularCalendarApp.controllers',
                'AngularCalendarApp.services', 'ui.calendar', 'ui.bootstrap'])
     .config(config);
